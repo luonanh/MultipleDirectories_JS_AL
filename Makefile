@@ -1,19 +1,24 @@
 CC=gcc
 CFLAGS=-g -Wall -std=c99
-OBJS=obj/allocator.o obj/memtest.o
-BIN=bin/main
+SRC=src
+OBJ=obj
+SRCS=$(wildcard $(SRC)/*.c)
+OBJS=$(patsubst $(SRC)/%.c, $(OBJ)/%.o, $(SRCS))
+
+BINDIR=bin
+BIN=$(BINDIR)/main
 SUBMITNAME=project.zip
 
 all:$(BIN)
 
-bin/main:$(OBJS)
+$(BIN):$(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) -o $@
 
-obj/%.o: src/%.c
+$(OBJ)/%.o: $(SRC)/%.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	$(RM) -r bin/* obj/* $(SUBMITNAME)
+	$(RM) -r $(BINDIR)/* $(OBJ)/* $(SUBMITNAME)
 
 submit:
 	$(RM) $(SUBMITNAME)
